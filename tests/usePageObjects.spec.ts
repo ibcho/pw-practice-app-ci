@@ -31,5 +31,11 @@ test('parameterized methods', async ({page}) => {
     await pm.navigateTo().datePickerPage()
     await pm.ondatePickerPage().selectCommonDatePickerDateFromToday(10)
     await pm.ondatePickerPage().selectDatePickerWithRangeFromToday(6,15)
-    
+
+
+    test.only('Testing with argos CI', async ({page}) => {
+        const pm = new PageManger(page)
+        await pm.navigateTo().formLayoutsPage()
+        await pm.navigateTo().datePickerPage()
+    })
 })
