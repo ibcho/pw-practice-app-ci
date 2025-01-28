@@ -9,7 +9,21 @@ export default defineConfig<TestOptions>({
   globalTimeout: 60000,
 
   retries: 1,
-  reporter: 'html',
+  reporter: [
+    ['html'],
+    ['json', { outputFile: 'test-results/results.json' }],
+    ['junit', { outputFile: 'test-results/results.xml' }],
+
+    process.env.CI ? ["dot"] : ["list"],
+    [
+      "@argos-ci/playwright/reporter",
+      {
+        // Upload to Argos on CI only.
+        uploadToArgos: !!process.env.CI,
+      },
+    ],
+    
+  ],
 
   use: {
     globalsQaURL: 'https://www.globalsqa.com/demo-site/draganddrop/#Photo%20Manager',
@@ -18,6 +32,7 @@ export default defineConfig<TestOptions>({
            : 'http://localhost:4200',
 
     trace: 'on-first-retry',
+    screenshot: "only-on-failure",
     actionTimeout: 10000,
     navigationTimeout: 50000,
     video: {
